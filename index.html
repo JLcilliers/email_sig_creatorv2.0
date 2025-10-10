@@ -222,6 +222,11 @@
             return isValid;
         }
 
+        // SVG icons as data URIs for reliable display
+        const phoneIconSVG = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9IiNGRjk4MDAiLz4KPHBhdGggZD0iTTE2LjUgMTQuMjVDMTUuNTYgMTQuMjUgMTQuNjQgMTQuMTEgMTMuNzggMTMuODVDMTMuNjEgMTMuNzkgMTMuNDMgMTMuNzUgMTMuMjUgMTMuNzVDMTIuODkgMTMuNzUgMTIuNTQgMTMuODggMTIuMjYgMTQuMTZMMTEuMDIgMTUuNEM5LjM4IDE0LjU2IDguNDQgMTMuNjIgNy42IDEyTDguODQgMTAuNzRDOS4xMyAxMC40NiA5LjI1IDEwLjEgOS4yNSA5Ljc1QzkuMjUgOS41NyA5LjIxIDkuMzkgOS4xNSA5LjIyQzguODkgOC4zNiA4Ljc1IDcuNDQgOC43NSA2LjVDOC43NSA2LjA5IDguNDEgNS43NSA4IDUuNzVINkM1LjU5IDUuNzUgNS4yNSA2LjA5IDUuMjUgNi41QzUuMjUgMTIuMzQgOS42NiAxNi43NSAxNS41IDE2Ljc1QzE1LjkxIDE2Ljc1IDE2LjI1IDE2LjQxIDE2LjI1IDE2VjEzLjVDMTYuMjUgMTMuMDkgMTUuOTEgMTIuNzUgMTUuNSAxMi43NVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=';
+
+        const linkedinIconSVG = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9IiNGRjk4MDAiLz4KPHRleHQgeD0iMTIiIHk9IjE2IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+aW48L3RleHQ+Cjwvc3ZnPgo=';
+
         // Generate signature HTML
         function generateSignature() {
             // Validate form first
@@ -237,56 +242,57 @@
             const linkedin = document.getElementById('linkedin').value.trim();
 
             // Generate the email signature HTML with inline styles for email compatibility
-            const signatureHTML = `<table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.4;">
+            // This matches the exact Canva design template
+            const signatureHTML = `<table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.4; color: #000000;">
     <tr>
         <td style="padding-right: 20px; vertical-align: top;">
-            <img src="${photoUrl}" alt="${name}" style="width: 120px; height: 120px; border-radius: 60px; border: 6px solid #FF9800; display: block;">
+            <img src="${photoUrl}" alt="${name}" style="width: 100px; height: 100px; border-radius: 50%; border: 5px solid #FF9800; display: block; object-fit: cover;">
         </td>
-        <td style="vertical-align: top;">
+        <td style="vertical-align: top; padding-top: 5px;">
             <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td style="padding-bottom: 5px;">
-                        <span style="font-size: 24px; font-weight: bold; color: #000000;">${name}</span>
+                    <td style="padding-bottom: 2px;">
+                        <span style="font-size: 22px; font-weight: bold; color: #000000; line-height: 1.2;">${name}</span>
                     </td>
                 </tr>
                 <tr>
                     <td style="padding-bottom: 8px;">
-                        <span style="font-size: 13px; color: #888888;">${title}</span>
+                        <span style="font-size: 12px; color: #888888; line-height: 1.2;">${title}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td style="padding-bottom: 10px;">
-                        <img src="https://i.imgur.com/9KXqG5x.png" alt="fseDigital freelanceSEO" style="height: 40px; display: block;">
+                    <td style="padding-bottom: 8px;">
+                        <img src="https://i.imgur.com/9KXqG5x.png" alt="fseDigital freelanceSEO" style="height: 35px; display: block;">
                     </td>
                 </tr>
                 <tr>
-                    <td style="padding-bottom: 10px;">
-                        <div style="height: 3px; background-color: #1565C0; width: 250px;"></div>
+                    <td style="padding-bottom: 8px;">
+                        <div style="height: 2px; background-color: #1565C0; width: 300px;"></div>
                     </td>
                 </tr>
                 <tr>
-                    <td style="padding-bottom: 5px;">
+                    <td style="padding-bottom: 4px;">
                         <table cellpadding="0" cellspacing="0" border="0">
                             <tr>
-                                <td style="vertical-align: middle; padding-right: 8px;">
-                                    <div style="width: 16px; height: 16px; background-color: #FF9800; border-radius: 8px; display: inline-block;"></div>
+                                <td style="vertical-align: middle; padding-right: 6px;">
+                                    <img src="${phoneIconSVG}" alt="Phone" style="width: 20px; height: 20px; display: block;">
                                 </td>
                                 <td style="vertical-align: middle;">
-                                    <span style="color: #333333; font-size: 13px;">${phone}</span>
+                                    <span style="color: #000000; font-size: 12px;">${phone}</span>
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
                 <tr>
-                    <td style="padding-bottom: 12px;">
+                    <td style="padding-bottom: 10px;">
                         <table cellpadding="0" cellspacing="0" border="0">
                             <tr>
-                                <td style="vertical-align: middle; padding-right: 8px;">
-                                    <div style="width: 16px; height: 16px; background-color: #0077B5; border-radius: 8px; display: inline-block;"></div>
+                                <td style="vertical-align: middle; padding-right: 6px;">
+                                    <img src="${linkedinIconSVG}" alt="LinkedIn" style="width: 20px; height: 20px; display: block;">
                                 </td>
                                 <td style="vertical-align: middle;">
-                                    <a href="${linkedin}" style="color: #0077B5; text-decoration: none; font-size: 13px;">${linkedin}</a>
+                                    <a href="${linkedin}" style="color: #FF9800; text-decoration: none; font-size: 12px;">${linkedin}</a>
                                 </td>
                             </tr>
                         </table>
@@ -294,7 +300,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="https://i.imgur.com/5xKvY2P.png" alt="Partner Logos" style="height: 35px; display: block;">
+                        <img src="https://i.imgur.com/5xKvY2P.png" alt="Partner Logos" style="height: 30px; display: block;">
                     </td>
                 </tr>
             </table>
