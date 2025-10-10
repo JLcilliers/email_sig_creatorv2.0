@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Signature Generator - fseDigital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .generator-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1565C0;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #1565C0;
+        }
+        .generate-btn {
+            background-color: #1565C0;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .generate-btn:hover {
+            background-color: #0D47A1;
+        }
+        .signature-preview {
+            margin-top: 40px;
+            padding: 30px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+        }
+        .signature-preview h2 {
+            margin-top: 0;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #signatureOutput {
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .copy-btn {
+            background-color: #FF9800;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+        .copy-btn:hover {
+            background-color: #F57C00;
+        }
+        .success-message {
+            color: #4CAF50;
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+        .error-message {
+            color: #f44336;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        .instructions {
+            background-color: #E3F2FD;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            border-left: 4px solid #1565C0;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #1565C0;
+            font-size: 16px;
+        }
+        .instructions p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="generator-container">
+        <h1>Email Signature Generator</h1>
+        <p class="subtitle">Create professional email signatures for fseDigital freelanceSEO</p>
+
+        <div class="instructions">
+            <h3>How to use:</h3>
+            <p>1. Fill in your information below</p>
+            <p>2. Click "Generate Signature" to preview</p>
+            <p>3. Click "Copy HTML to Clipboard" and paste into your email client's signature settings</p>
+        </div>
+
+        <div class="form-group">
+            <label for="photoUrl">Photo URL: *</label>
+            <input type="url" id="photoUrl" placeholder="https://example.com/your-photo.jpg" required>
+            <div class="error-message" id="photoUrlError">Please enter a valid URL</div>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Full Name: *</label>
+            <input type="text" id="name" placeholder="John Doe" required>
+            <div class="error-message" id="nameError">Please enter your name</div>
+        </div>
+
+        <div class="form-group">
+            <label for="title">Job Title: *</label>
+            <input type="text" id="title" placeholder="Senior Developer">
+            <div class="error-message" id="titleError">Please enter your job title</div>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Telephone Number: *</label>
+            <input type="tel" id="phone" placeholder="+1 (555) 123-4567">
+            <div class="error-message" id="phoneError">Please enter your phone number</div>
+        </div>
+
+        <div class="form-group">
+            <label for="linkedin">LinkedIn URL: *</label>
+            <input type="url" id="linkedin" placeholder="https://linkedin.com/in/johndoe">
+            <div class="error-message" id="linkedinError">Please enter a valid LinkedIn URL</div>
+        </div>
+
+        <button class="generate-btn" onclick="generateSignature()">Generate Signature</button>
+
+        <div class="signature-preview" id="previewSection" style="display:none;">
+            <h2>Your Signature Preview:</h2>
+            <div id="signatureOutput"></div>
+            <button class="copy-btn" onclick="copySignature()">Copy HTML to Clipboard</button>
+            <div class="success-message" id="successMessage">✓ Copied to clipboard! Paste this into your email client's signature settings.</div>
+        </div>
+    </div>
+
+    <script>
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+
+            // Hide all error messages
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+            // Validate Photo URL
+            const photoUrl = document.getElementById('photoUrl').value.trim();
+            if (!photoUrl) {
+                document.getElementById('photoUrlError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate Name
+            const name = document.getElementById('name').value.trim();
+            if (!name) {
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate Title
+            const title = document.getElementById('title').value.trim();
+            if (!title) {
+                document.getElementById('titleError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate Phone
+            const phone = document.getElementById('phone').value.trim();
+            if (!phone) {
+                document.getElementById('phoneError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate LinkedIn
+            const linkedin = document.getElementById('linkedin').value.trim();
+            if (!linkedin) {
+                document.getElementById('linkedinError').style.display = 'block';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Generate signature HTML
+        function generateSignature() {
+            // Validate form first
+            if (!validateForm()) {
+                return;
+            }
+
+            // Get form values
+            const photoUrl = document.getElementById('photoUrl').value.trim();
+            const name = document.getElementById('name').value.trim();
+            const title = document.getElementById('title').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const linkedin = document.getElementById('linkedin').value.trim();
+
+            // Generate the email signature HTML with inline styles for email compatibility
+            const signatureHTML = `<table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.4;">
+    <tr>
+        <td style="padding-right: 20px; vertical-align: top;">
+            <img src="${photoUrl}" alt="${name}" style="width: 120px; height: 120px; border-radius: 60px; border: 6px solid #FF9800; display: block;">
+        </td>
+        <td style="vertical-align: top;">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding-bottom: 5px;">
+                        <span style="font-size: 24px; font-weight: bold; color: #000000;">${name}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 8px;">
+                        <span style="font-size: 13px; color: #888888;">${title}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 10px;">
+                        <img src="https://i.imgur.com/9KXqG5x.png" alt="fseDigital freelanceSEO" style="height: 40px; display: block;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 10px;">
+                        <div style="height: 3px; background-color: #1565C0; width: 250px;"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 5px;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="vertical-align: middle; padding-right: 8px;">
+                                    <div style="width: 16px; height: 16px; background-color: #FF9800; border-radius: 8px; display: inline-block;"></div>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <span style="color: #333333; font-size: 13px;">${phone}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 12px;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="vertical-align: middle; padding-right: 8px;">
+                                    <div style="width: 16px; height: 16px; background-color: #0077B5; border-radius: 8px; display: inline-block;"></div>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <a href="${linkedin}" style="color: #0077B5; text-decoration: none; font-size: 13px;">${linkedin}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="https://i.imgur.com/5xKvY2P.png" alt="Partner Logos" style="height: 35px; display: block;">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>`;
+
+            // Display the signature preview
+            document.getElementById('signatureOutput').innerHTML = signatureHTML;
+            document.getElementById('previewSection').style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+
+            // Scroll to preview
+            document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Copy signature HTML to clipboard
+        function copySignature() {
+            const signatureHTML = document.getElementById('signatureOutput').innerHTML;
+
+            // Use the Clipboard API to copy the HTML
+            navigator.clipboard.writeText(signatureHTML).then(() => {
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+            }).catch(err => {
+                // Fallback error handling
+                alert('Failed to copy to clipboard. Please try selecting the signature and copying manually.');
+                console.error('Copy failed:', err);
+            });
+        }
+
+        // Add Enter key support for form submission
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    generateSignature();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
