@@ -134,6 +134,7 @@
             <p>1. Fill in your information below</p>
             <p>2. Click "Generate Signature" to preview</p>
             <p>3. Click "Copy HTML to Clipboard" and paste into your email client's signature settings</p>
+            <p><strong>Note:</strong> For custom orange icons, upload your Canva phone and LinkedIn icons to an image host (like Imgur) and update the icon URLs in the code.</p>
         </div>
 
         <div class="form-group">
@@ -164,6 +165,20 @@
             <label for="linkedin">LinkedIn URL: *</label>
             <input type="url" id="linkedin" placeholder="https://linkedin.com/in/johndoe">
             <div class="error-message" id="linkedinError">Please enter a valid LinkedIn URL</div>
+        </div>
+
+        <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+
+        <h3 style="color: #1565C0; font-size: 16px; margin-bottom: 15px;">Custom Icon URLs (Optional)</h3>
+
+        <div class="form-group">
+            <label for="phoneIconUrl">Phone Icon URL:</label>
+            <input type="url" id="phoneIconUrl" placeholder="https://img.icons8.com/color/48/phone-circled--v1.png">
+        </div>
+
+        <div class="form-group">
+            <label for="linkedinIconUrl">LinkedIn Icon URL:</label>
+            <input type="url" id="linkedinIconUrl" placeholder="https://img.icons8.com/color/48/linkedin-circled--v1.png">
         </div>
 
         <button class="generate-btn" onclick="generateSignature()">Generate Signature</button>
@@ -222,10 +237,9 @@
             return isValid;
         }
 
-        // SVG icons as data URIs for reliable display
-        const phoneIconSVG = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9IiNGRjk4MDAiLz4KPHBhdGggZD0iTTE2LjUgMTQuMjVDMTUuNTYgMTQuMjUgMTQuNjQgMTQuMTEgMTMuNzggMTMuODVDMTMuNjEgMTMuNzkgMTMuNDMgMTMuNzUgMTMuMjUgMTMuNzVDMTIuODkgMTMuNzUgMTIuNTQgMTMuODggMTIuMjYgMTQuMTZMMTEuMDIgMTUuNEM5LjM4IDE0LjU2IDguNDQgMTMuNjIgNy42IDEyTDguODQgMTAuNzRDOS4xMyAxMC40NiA5LjI1IDEwLjEgOS4yNSA5Ljc1QzkuMjUgOS41NyA5LjIxIDkuMzkgOS4xNSA5LjIyQzguODkgOC4zNiA4Ljc1IDcuNDQgOC43NSA2LjVDOC43NSA2LjA5IDguNDEgNS43NSA4IDUuNzVINkM1LjU5IDUuNzUgNS4yNSA2LjA5IDUuMjUgNi41QzUuMjUgMTIuMzQgOS42NiAxNi43NSAxNS41IDE2Ljc1QzE1LjkxIDE2Ljc1IDE2LjI1IDE2LjQxIDE2LjI1IDE2VjEzLjVDMTYuMjUgMTMuMDkgMTUuOTEgMTIuNzUgMTUuNSAxMi43NVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=';
-
-        const linkedinIconSVG = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9IiNGRjk4MDAiLz4KPHRleHQgeD0iMTIiIHk9IjE2IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+aW48L3RleHQ+Cjwvc3ZnPgo=';
+        // Default icon URLs
+        const defaultPhoneIconURL = 'https://img.icons8.com/color/48/phone-circled--v1.png';
+        const defaultLinkedinIconURL = 'https://img.icons8.com/color/48/linkedin-circled--v1.png';
 
         // Generate signature HTML
         function generateSignature() {
@@ -240,6 +254,10 @@
             const title = document.getElementById('title').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const linkedin = document.getElementById('linkedin').value.trim();
+
+            // Get custom icon URLs or use defaults
+            const phoneIconURL = document.getElementById('phoneIconUrl').value.trim() || defaultPhoneIconURL;
+            const linkedinIconURL = document.getElementById('linkedinIconUrl').value.trim() || defaultLinkedinIconURL;
 
             // Generate the email signature HTML with inline styles for email compatibility
             // This matches the exact Canva design template
@@ -275,7 +293,7 @@
                         <table cellpadding="0" cellspacing="0" border="0">
                             <tr>
                                 <td style="vertical-align: middle; padding-right: 6px;">
-                                    <img src="${phoneIconSVG}" alt="Phone" style="width: 20px; height: 20px; display: block;">
+                                    <img src="${phoneIconURL}" alt="Phone" style="width: 18px; height: 18px; display: block;">
                                 </td>
                                 <td style="vertical-align: middle;">
                                     <span style="color: #000000; font-size: 12px;">${phone}</span>
@@ -289,7 +307,7 @@
                         <table cellpadding="0" cellspacing="0" border="0">
                             <tr>
                                 <td style="vertical-align: middle; padding-right: 6px;">
-                                    <img src="${linkedinIconSVG}" alt="LinkedIn" style="width: 20px; height: 20px; display: block;">
+                                    <img src="${linkedinIconURL}" alt="LinkedIn" style="width: 18px; height: 18px; display: block;">
                                 </td>
                                 <td style="vertical-align: middle;">
                                     <a href="${linkedin}" style="color: #FF9800; text-decoration: none; font-size: 12px;">${linkedin}</a>
