@@ -1,368 +1,616 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Signature Generator - fseDigital</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .generator-container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #1565C0;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #888;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        input:focus {
-            outline: none;
-            border-color: #1565C0;
-        }
-        .generate-btn {
-            background-color: #1565C0;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-            width: 100%;
-        }
-        .generate-btn:hover {
-            background-color: #0D47A1;
-        }
-        .signature-preview {
-            margin-top: 40px;
-            padding: 30px;
-            background: #fafafa;
-            border-radius: 8px;
-            border: 2px dashed #ddd;
-        }
-        .signature-preview h2 {
-            margin-top: 0;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        #signatureOutput {
-            background: white;
-            padding: 20px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-        .copy-btn {
-            background-color: #FF9800;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
-        }
-        .copy-btn:hover {
-            background-color: #F57C00;
-        }
-        .success-message {
-            color: #4CAF50;
-            margin-top: 10px;
-            font-weight: bold;
-            display: none;
-        }
-        .error-message {
-            color: #f44336;
-            font-size: 13px;
-            margin-top: 5px;
-            display: none;
-        }
-        .instructions {
-            background-color: #E3F2FD;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 25px;
-            border-left: 4px solid #1565C0;
-        }
-        .instructions h3 {
-            margin-top: 0;
-            color: #1565C0;
-            font-size: 16px;
-        }
-        .instructions p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #555;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FSE Digital Email Signature Generator</title>
+  <style>
+    :root {
+      --bg: #0b0c0f;
+      --panel: #151821;
+      --ink: #e6e8ec;
+      --muted: #9aa3b2;
+      --accent: #0066cc;
+      --ok: #2ea44f;
+      --warn: #a67900;
+      --border: #232838;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: linear-gradient(180deg, #0b0c0f, #0f1220 60%, #0b0c0f);
+      color: var(--ink);
+    }
+    header {
+      padding: 20px clamp(16px, 3vw, 28px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(15,18,32,0.85);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      margin: 0 0 6px 0;
+      font-size: clamp(18px, 3.4vw, 24px);
+      letter-spacing: 0.2px;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    main {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 18px;
+      padding: 18px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    @media (max-width: 980px) {
+      main { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .card h2 {
+      margin: 0 0 12px 0;
+      font-size: 16px;
+      color: #f3f4f6;
+      font-weight: 600;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .field { margin-bottom: 12px; }
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    input[type="text"], input[type="email"], input[type="url"], input[type="tel"], input[type="color"], textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0e111a;
+      color: var(--ink);
+      outline: none;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+    input[type="file"] {
+      width: 100%;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    input[type="color"] {
+      height: 42px;
+      cursor: pointer;
+    }
+    .hint { 
+      font-size: 11px; 
+      color: var(--muted); 
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+    .btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    button {
+      padding: 11px 16px;
+      background: var(--accent);
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,102,204,0.3);
+    }
+    .ghost { 
+      background: transparent; 
+      border: 1px solid var(--border); 
+      color: var(--ink); 
+    }
+    .ghost:hover {
+      background: rgba(255,255,255,0.05);
+      box-shadow: none;
+    }
+    .ok { background: var(--ok); }
+    .ok:hover { box-shadow: 0 4px 12px rgba(46,164,79,0.3); }
+    .preview-wrap {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 14px;
+    }
+    .preview-canvas {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #dfe3ea;
+      padding: 20px;
+      color: #111827;
+      min-height: 300px;
+    }
+    .code-area {
+      width: 100%;
+      min-height: 200px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #e6e8ec;
+      background: #0e111a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      resize: vertical;
+    }
+    .footer-note { 
+      font-size: 12px; 
+      color: var(--muted); 
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+    .divider { 
+      height: 1px; 
+      background: var(--border); 
+      margin: 16px 0; 
+    }
+    .usage-list {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 8px 0;
+      padding-left: 20px;
+    }
+    .usage-list li {
+      margin-bottom: 6px;
+    }
+    .brand-tag {
+      display: inline-block;
+      background: rgba(0,102,204,0.1);
+      color: var(--accent);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+  </style>
 </head>
 <body>
-    <div class="generator-container">
-        <h1>Email Signature Generator</h1>
-        <p class="subtitle">Create professional email signatures for fseDigital freelanceSEO</p>
+  <header>
+    <h1>🚀 FSE Digital Email Signature Generator</h1>
+    <p>Fill in your details below • Preview updates in real-time • Copy and paste into your email client</p>
+  </header>
 
-        <div class="instructions">
-            <h3>How to use:</h3>
-            <p>1. Fill in your information below</p>
-            <p>2. Click "Generate Signature" to preview</p>
-            <p>3. Click "Copy HTML to Clipboard" and paste into your email client's signature settings</p>
-            <p><strong>Note:</strong> For custom orange icons, upload your Canva phone and LinkedIn icons to an image host (like Imgur) and update the icon URLs in the code.</p>
+  <main>
+    <section class="card" id="formCard" aria-label="Signature form">
+      <h2>👤 Your Details</h2>
+      <div class="row">
+        <div class="field">
+          <label for="first">First Name *</label>
+          <input id="first" type="text" placeholder="John" required />
         </div>
-
-        <div class="form-group">
-            <label for="photoUrl">Photo URL: *</label>
-            <input type="url" id="photoUrl" placeholder="https://example.com/your-photo.jpg" required>
-            <div class="error-message" id="photoUrlError">Please enter a valid URL</div>
+        <div class="field">
+          <label for="last">Last Name *</label>
+          <input id="last" type="text" placeholder="Smith" required />
         </div>
+      </div>
+      
+      <div class="field">
+        <label for="title">Job Title *</label>
+        <input id="title" type="text" placeholder="Senior Digital Marketing Specialist" required />
+      </div>
 
-        <div class="form-group">
-            <label for="name">Full Name: *</label>
-            <input type="text" id="name" placeholder="John Doe" required>
-            <div class="error-message" id="nameError">Please enter your name</div>
+      <div class="row">
+        <div class="field">
+          <label for="email">Email Address *</label>
+          <input id="email" type="email" placeholder="john@fsedigital.com" required />
         </div>
-
-        <div class="form-group">
-            <label for="title">Job Title: *</label>
-            <input type="text" id="title" placeholder="Senior Developer">
-            <div class="error-message" id="titleError">Please enter your job title</div>
+        <div class="field">
+          <label for="phone">Mobile Number *</label>
+          <input id="phone" type="tel" placeholder="+27 XX XXX XXXX" required />
         </div>
+      </div>
 
-        <div class="form-group">
-            <label for="phone">Telephone Number: *</label>
-            <input type="tel" id="phone" placeholder="+1 (555) 123-4567">
-            <div class="error-message" id="phoneError">Please enter your phone number</div>
+      <div class="row">
+        <div class="field">
+          <label for="website">Website URL</label>
+          <input id="website" type="url" placeholder="https://fsedigital.com" value="https://fsedigital.com" />
         </div>
-
-        <div class="form-group">
-            <label for="linkedin">LinkedIn URL: *</label>
-            <input type="url" id="linkedin" placeholder="https://linkedin.com/in/johndoe">
-            <div class="error-message" id="linkedinError">Please enter a valid LinkedIn URL</div>
+        <div class="field">
+          <label for="linkedin">LinkedIn Profile URL</label>
+          <input id="linkedin" type="url" placeholder="https://linkedin.com/in/yourprofile" />
         </div>
+      </div>
 
-        <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+      <div class="divider"></div>
+      <h2>📸 Profile Photo</h2>
+      <div class="field">
+        <label for="headshotFile">Upload Photo (Square format recommended)</label>
+        <input id="headshotFile" type="file" accept="image/*" />
+        <div class="hint">💡 For best compatibility across all email clients, use the URL option below with a hosted image.</div>
+      </div>
+      <div class="field">
+        <label for="headshotUrl">OR paste Photo URL (Recommended)</label>
+        <input id="headshotUrl" type="url" placeholder="https://yourdomain.com/photos/john-smith.jpg" />
+        <div class="hint">Host your photo on a CDN or cloud storage for maximum compatibility.</div>
+      </div>
 
-        <h3 style="color: #1565C0; font-size: 16px; margin-bottom: 15px;">Custom Icon URLs (Optional)</h3>
-
-        <div class="form-group">
-            <label for="phoneIconUrl">Phone Icon URL:</label>
-            <input type="url" id="phoneIconUrl" placeholder="https://img.icons8.com/color/48/phone-circled--v1.png">
+      <div class="divider"></div>
+      <h2>🎨 Brand Customization</h2>
+      <div class="row">
+        <div class="field">
+          <label for="brandColor">Primary Link Color</label>
+          <input id="brandColor" type="color" value="#0066cc" />
+          <div class="hint">Used for links and accent line</div>
         </div>
-
-        <div class="form-group">
-            <label for="linkedinIconUrl">LinkedIn Icon URL:</label>
-            <input type="url" id="linkedinIconUrl" placeholder="https://img.icons8.com/color/48/linkedin-circled--v1.png">
+        <div class="field">
+          <label for="textColor">Text Color</label>
+          <input id="textColor" type="color" value="#1a1a1a" />
         </div>
+      </div>
 
-        <button class="generate-btn" onclick="generateSignature()">Generate Signature</button>
+      <div class="btns">
+        <button id="btnPreview" type="button" class="ok">🔄 Refresh Preview</button>
+        <button id="btnCopyRich" type="button">📋 Copy Rich Signature</button>
+        <button id="btnCopyCode" type="button" class="ghost">💻 Copy HTML Code</button>
+        <button id="btnDownload" type="button" class="ghost">⬇️ Download HTML</button>
+        <button id="btnReset" type="button" class="ghost">🔃 Reset Form</button>
+      </div>
+      
+      <div class="brand-tag">🏢 FSE Digital Branding Locked</div>
+      <p class="footer-note">✅ All partner logos and branding are pre-configured. Simply fill in your personal details and copy the signature.</p>
+    </section>
 
-        <div class="signature-preview" id="previewSection" style="display:none;">
-            <h2>Your Signature Preview:</h2>
-            <div id="signatureOutput"></div>
-            <button class="copy-btn" onclick="copySignature()">Copy HTML to Clipboard</button>
-            <div class="success-message" id="successMessage">✓ Copied to clipboard! Paste this into your email client's signature settings.</div>
-        </div>
-    </div>
+    <section class="preview-wrap">
+      <div class="card">
+        <h2>👁️ Live Preview</h2>
+        <div id="preview" class="preview-canvas" aria-live="polite"></div>
+      </div>
+      
+      <div class="card">
+        <h2>📝 HTML Code</h2>
+        <textarea id="code" class="code-area" spellcheck="false" readonly></textarea>
+      </div>
+      
+      <div class="card">
+        <h2>📖 How to Use</h2>
+        <ul class="usage-list">
+          <li><strong>Gmail:</strong> Click "Copy Rich Signature" → Go to Gmail Settings → General → Signature → Paste</li>
+          <li><strong>Outlook Desktop:</strong> Click "Copy Rich Signature" → Tools → Options → Mail Format → Signatures → Paste</li>
+          <li><strong>Outlook Web:</strong> Settings → View all Outlook settings → Mail → Compose and reply → Email signature → Paste</li>
+          <li><strong>Apple Mail:</strong> Preferences → Signatures → Click "+" → Select all default text → Paste</li>
+          <li><strong>Troubleshooting:</strong> If images don't appear, use hosted URLs instead of uploaded files</li>
+        </ul>
+      </div>
+    </section>
+  </main>
 
-    <script>
-        // Form validation
-        function validateForm() {
-            let isValid = true;
+  <script>
+    // Utility functions
+    const esc = (s) => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const trim = (s) => String(s || '').trim();
+    const ensureHttps = (u) => {
+      u = trim(u);
+      if (!u) return '';
+      if (/^https?:\/\//i.test(u)) return u;
+      return 'https://' + u.replace(/^\/+/, '');
+    };
+    const telHref = (p) => {
+      const digits = String(p || '').replace(/[^0-9+]/g, '');
+      return digits ? 'tel:' + digits : '';
+    };
 
-            // Hide all error messages
-            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+    const fileToDataURL = (file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
-            // Validate Photo URL
-            const photoUrl = document.getElementById('photoUrl').value.trim();
-            if (!photoUrl) {
-                document.getElementById('photoUrlError').style.display = 'block';
-                isValid = false;
-            }
+    // FSE Digital Brand Assets - Locked
+    const BRAND_ASSETS = {
+      companyLogos: [
+        'https://i.ibb.co/C5NqgFPp/images-3.png',
+        'https://i.ibb.co/jkrD0p33/FSE-Digital-Logo.jpg'
+      ],
+      partnerLogos: [
+        'https://i.ibb.co/Y7chLLXn/google-partner-1.webp',
+        'https://i.ibb.co/3mXSsYbv/images-2.png',
+        'https://i.ibb.co/1ftb3Vrc/MC-Partner-Horizontal-Final-1.png',
+        'https://i.ibb.co/rRYVWydk/semrush-agency-partner-badge-1200x1200.png',
+        'https://i.ibb.co/gMNjJxy2/Met-Business-Partners.png'
+      ],
+      phoneIcon: 'https://i.ibb.co/8nhsbQzV/istockphoto-1494579261-612x612.jpg',
+      linkedInIcon: 'https://i.ibb.co/LXffYwV6/187e511cdb50bf5614bc5dbc29eaeed8.jpg'
+    };
 
-            // Validate Name
-            const name = document.getElementById('name').value.trim();
-            if (!name) {
-                document.getElementById('nameError').style.display = 'block';
-                isValid = false;
-            }
+    async function getFormValues() {
+      const vals = {
+        first: trim(document.getElementById('first').value),
+        last: trim(document.getElementById('last').value),
+        title: trim(document.getElementById('title').value),
+        email: trim(document.getElementById('email').value),
+        phone: trim(document.getElementById('phone').value),
+        website: ensureHttps(document.getElementById('website').value),
+        linkedin: ensureHttps(document.getElementById('linkedin').value),
+        headshotUrl: ensureHttps(document.getElementById('headshotUrl').value),
+        brandColor: document.getElementById('brandColor').value || '#0066cc',
+        textColor: document.getElementById('textColor').value || '#1a1a1a',
+      };
 
-            // Validate Title
-            const title = document.getElementById('title').value.trim();
-            if (!title) {
-                document.getElementById('titleError').style.display = 'block';
-                isValid = false;
-            }
+      // Handle file upload
+      const fileInput = document.getElementById('headshotFile');
+      if (!vals.headshotUrl && fileInput.files && fileInput.files[0]) {
+        try {
+          vals.headshotUrl = await fileToDataURL(fileInput.files[0]);
+        } catch (_) {}
+      }
+      return vals;
+    }
 
-            // Validate Phone
-            const phone = document.getElementById('phone').value.trim();
-            if (!phone) {
-                document.getElementById('phoneError').style.display = 'block';
-                isValid = false;
-            }
+    function buildSignatureHTML(v) {
+      const fullName = esc([v.first, v.last].filter(Boolean).join(' '));
+      const tColor = v.textColor;
+      const linkColor = v.brandColor;
 
-            // Validate LinkedIn
-            const linkedin = document.getElementById('linkedin').value.trim();
-            if (!linkedin) {
-                document.getElementById('linkedinError').style.display = 'block';
-                isValid = false;
-            }
+      // Build headshot cell - larger and centered vertically
+      const photoCell = v.headshotUrl ? `
+        <td style="padding:0 20px 0 0; vertical-align:middle;">
+          <img src="${v.headshotUrl}" alt="${fullName}" width="140" height="140" style="display:block; border-radius:50%; border:3px solid ${linkColor}; outline:0; text-decoration:none;" />
+        </td>` : '';
 
-            return isValid;
-        }
+      // Build company logos stacked vertically - both left-aligned
+      const companyLogosHTML = `
+        <div style="margin:10px 0 0 0;">
+          <img src="${BRAND_ASSETS.companyLogos[0]}" alt="Freelance SEO" height="36" style="display:block; border:0; outline:0; text-decoration:none; margin:0;" />
+          <img src="${BRAND_ASSETS.companyLogos[1]}" alt="FSE Digital" height="36" style="display:block; border:0; outline:0; text-decoration:none; margin:6px 0 0 0;" />
+        </div>`;
 
-        // Default icon URLs
-        const defaultPhoneIconURL = 'https://img.icons8.com/color/48/phone-circled--v1.png';
-        const defaultLinkedinIconURL = 'https://img.icons8.com/color/48/linkedin-circled--v1.png';
+      // Build contact rows with icons
+      const contactRows = [];
+      
+      if (v.phone) {
+        const pDisp = esc(v.phone);
+        const pHref = telHref(v.phone);
+        contactRows.push(`
+          <tr>
+            <td style="padding:4px 8px 4px 0; vertical-align:middle;">
+              <img src="${BRAND_ASSETS.phoneIcon}" alt="Phone" width="16" height="16" style="display:block; border:0;" />
+            </td>
+            <td style="padding:4px 0; font-size:14px; color:${tColor};">
+              ${pHref ? `<a href="${pHref}" style="color:${linkColor}; text-decoration:none;">${pDisp}</a>` : `<span>${pDisp}</span>`}
+            </td>
+          </tr>`);
+      }
 
-        // Generate signature HTML
-        function generateSignature() {
-            // Validate form first
-            if (!validateForm()) {
-                return;
-            }
+      if (v.email) {
+        const eDisp = esc(v.email);
+        contactRows.push(`
+          <tr>
+            <td style="padding:4px 8px 4px 0; vertical-align:middle;">
+              <span style="font-size:16px; color:${linkColor};">✉</span>
+            </td>
+            <td style="padding:4px 0; font-size:14px; color:${tColor};">
+              <a href="mailto:${eDisp}" style="color:${linkColor}; text-decoration:none;">${eDisp}</a>
+            </td>
+          </tr>`);
+      }
 
-            // Get form values
-            const photoUrl = document.getElementById('photoUrl').value.trim();
-            const name = document.getElementById('name').value.trim();
-            const title = document.getElementById('title').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const linkedin = document.getElementById('linkedin').value.trim();
+      if (v.website) {
+        const wDisp = esc(v.website.replace(/^https?:\/\//i, ''));
+        contactRows.push(`
+          <tr>
+            <td style="padding:4px 8px 4px 0; vertical-align:middle;">
+              <span style="font-size:16px; color:${linkColor};">🌐</span>
+            </td>
+            <td style="padding:4px 0; font-size:14px; color:${tColor};">
+              <a href="${v.website}" style="color:${linkColor}; text-decoration:none;">${wDisp}</a>
+            </td>
+          </tr>`);
+      }
 
-            // Get custom icon URLs or use defaults
-            const phoneIconURL = document.getElementById('phoneIconUrl').value.trim() || defaultPhoneIconURL;
-            const linkedinIconURL = document.getElementById('linkedinIconUrl').value.trim() || defaultLinkedinIconURL;
+      if (v.linkedin) {
+        contactRows.push(`
+          <tr>
+            <td style="padding:4px 8px 4px 0; vertical-align:middle;">
+              <img src="${BRAND_ASSETS.linkedInIcon}" alt="LinkedIn" width="16" height="16" style="display:block; border:0; border-radius:2px;" />
+            </td>
+            <td style="padding:4px 0; font-size:14px; color:${tColor};">
+              <a href="${v.linkedin}" style="color:${linkColor}; text-decoration:none;">LinkedIn Profile</a>
+            </td>
+          </tr>`);
+      }
 
-            // Generate the email signature HTML with inline styles for email compatibility
-            // This matches the exact Canva design template
-            const signatureHTML = `<table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.4; color: #000000;">
-    <tr>
-        <td style="padding-right: 20px; vertical-align: top;">
-            <img src="${photoUrl}" alt="${name}" style="width: 100px; height: 100px; border-radius: 50%; border: 5px solid #FF9800; display: block; object-fit: cover;">
+      // Build partner logos row
+      const logoSpacing = '<td style="width:10px; font-size:0; line-height:0;">&nbsp;</td>';
+      const partnerLogoCells = BRAND_ASSETS.partnerLogos.map(url => `
+        <td style="padding:0;">
+          <img src="${url}" alt="Partner" height="28" style="display:block; border:0; outline:0; text-decoration:none;" />
         </td>
-        <td style="vertical-align: top; padding-top: 5px;">
-            <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <td style="padding-bottom: 2px;">
-                        <span style="font-size: 22px; font-weight: bold; color: #000000; line-height: 1.2;">${name}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding-bottom: 8px;">
-                        <span style="font-size: 12px; color: #888888; line-height: 1.2;">${title}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding-bottom: 8px;">
-                        <img src="https://i.imgur.com/9KXqG5x.png" alt="fseDigital freelanceSEO" style="height: 35px; display: block;">
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding-bottom: 8px;">
-                        <div style="height: 2px; background-color: #1565C0; width: 300px;"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding-bottom: 4px;">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td style="vertical-align: middle; padding-right: 6px;">
-                                    <img src="${phoneIconURL}" alt="Phone" style="width: 18px; height: 18px; display: block;">
-                                </td>
-                                <td style="vertical-align: middle;">
-                                    <span style="color: #000000; font-size: 12px;">${phone}</span>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding-bottom: 10px;">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td style="vertical-align: middle; padding-right: 6px;">
-                                    <img src="${linkedinIconURL}" alt="LinkedIn" style="width: 18px; height: 18px; display: block;">
-                                </td>
-                                <td style="vertical-align: middle;">
-                                    <a href="${linkedin}" style="color: #FF9800; text-decoration: none; font-size: 12px;">${linkedin}</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="https://i.imgur.com/5xKvY2P.png" alt="Partner Logos" style="height: 30px; display: block;">
-                    </td>
-                </tr>
+      `).join(logoSpacing);
+
+      const partnerLogosHTML = `
+        <tr>
+          <td colspan="2" style="padding:16px 0 0 0;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+              <tr>${partnerLogoCells}</tr>
             </table>
-        </td>
-    </tr>
-</table>`;
+          </td>
+        </tr>`;
 
-            // Display the signature preview
-            document.getElementById('signatureOutput').innerHTML = signatureHTML;
-            document.getElementById('previewSection').style.display = 'block';
-            document.getElementById('successMessage').style.display = 'none';
+      // Build complete signature
+      const html = `<!-- FSE Digital Email Signature - ${fullName} -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; font-family: 'Segoe UI', Arial, Helvetica, sans-serif; background:#ffffff; max-width:600px;">
+  <tr>
+    <td style="padding:16px; border-top:4px solid ${linkColor};">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+        <tr>
+          ${photoCell}
+          <td style="padding:0; vertical-align:top;">
+            <div style="font-size:20px; line-height:24px; color:${tColor}; font-weight:700; margin:0;">${fullName}</div>
+            <div style="font-size:15px; line-height:20px; color:#666666; margin:4px 0 0 0;">${esc(v.title)}</div>
+            ${companyLogosHTML}
+            <div style="height:12px; font-size:0; line-height:0;">&nbsp;</div>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+              ${contactRows.join('')}
+            </table>
+          </td>
+        </tr>
+        ${partnerLogosHTML}
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- End of FSE Digital Email Signature -->`;
 
-            // Scroll to preview
-            document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return html;
+    }
+
+    async function render() {
+      const v = await getFormValues();
+      const html = buildSignatureHTML(v);
+      document.getElementById('preview').innerHTML = html;
+      document.getElementById('code').value = html;
+    }
+
+    async function copyRich() {
+      const html = document.getElementById('code').value;
+      if (!html) {
+        alert('⚠️ Please fill in the required fields first.');
+        return;
+      }
+      
+      try {
+        if (navigator.clipboard && window.ClipboardItem) {
+          const item = new ClipboardItem({
+            "text/html": new Blob([html], { type: "text/html" }),
+            "text/plain": new Blob([html], { type: "text/plain" })
+          });
+          await navigator.clipboard.write([item]);
+          alert('✅ Rich signature copied! Now paste it into your email signature settings.');
+          return;
         }
-
-        // Copy signature HTML to clipboard
-        function copySignature() {
-            const signatureHTML = document.getElementById('signatureOutput').innerHTML;
-
-            // Use the Clipboard API to copy the HTML
-            navigator.clipboard.writeText(signatureHTML).then(() => {
-                // Show success message
-                document.getElementById('successMessage').style.display = 'block';
-
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    document.getElementById('successMessage').style.display = 'none';
-                }, 5000);
-            }).catch(err => {
-                // Fallback error handling
-                alert('Failed to copy to clipboard. Please try selecting the signature and copying manually.');
-                console.error('Copy failed:', err);
-            });
+      } catch (err) {
+        console.error('ClipboardItem failed:', err);
+      }
+      
+      // Fallback
+      try {
+        const range = document.createRange();
+        range.selectNodeContents(document.getElementById('preview'));
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        const ok = document.execCommand('copy');
+        sel.removeAllRanges();
+        if (ok) {
+          alert('✅ Copied! Now paste into your email signature settings.');
+        } else {
+          alert('⚠️ Copy failed. Please select the preview manually and copy with Ctrl+C or Cmd+C.');
         }
+      } catch (err) {
+        alert('⚠️ Copy not supported. Please select the preview manually and copy with Ctrl+C or Cmd+C.');
+      }
+    }
 
-        // Add Enter key support for form submission
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    generateSignature();
-                }
-            });
-        });
-    </script>
+    async function copyCode() {
+      const ta = document.getElementById('code');
+      ta.focus();
+      ta.select();
+      try {
+        document.execCommand('copy');
+        alert('✅ HTML code copied to clipboard!');
+      } catch (err) {
+        alert('⚠️ Copy failed. Please select the code manually.');
+      }
+    }
+
+    function downloadHTML() {
+      const html = document.getElementById('code').value;
+      if (!html) {
+        alert('⚠️ Please fill in the required fields first.');
+        return;
+      }
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'fse-digital-signature.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      alert('✅ Signature downloaded!');
+    }
+
+    function resetForm() {
+      const inputs = document.querySelectorAll('#formCard input[type="text"], #formCard input[type="email"], #formCard input[type="tel"], #formCard input[type="url"]');
+      inputs.forEach(el => {
+        if (el.id !== 'website') el.value = '';
+      });
+      document.getElementById('website').value = 'https://fsedigital.com';
+      document.getElementById('brandColor').value = '#0066cc';
+      document.getElementById('textColor').value = '#1a1a1a';
+      document.getElementById('headshotFile').value = '';
+      render();
+    }
+
+    // Event listeners
+    document.getElementById('btnPreview').addEventListener('click', render);
+    document.getElementById('btnCopyRich').addEventListener('click', copyRich);
+    document.getElementById('btnCopyCode').addEventListener('click', copyCode);
+    document.getElementById('btnDownload').addEventListener('click', downloadHTML);
+    document.getElementById('btnReset').addEventListener('click', resetForm);
+
+    // Auto-update preview on input
+    document.querySelectorAll('input, textarea').forEach(el => {
+      el.addEventListener('input', () => {
+        window.clearTimeout(window._sigTimer);
+        window._sigTimer = setTimeout(render, 150);
+      });
+    });
+
+    // Demo data for testing
+    function fillDemo() {
+      document.getElementById('first').value = 'John';
+      document.getElementById('last').value = 'Smith';
+      document.getElementById('title').value = 'Senior Digital Marketing Specialist';
+      document.getElementById('email').value = 'john.smith@fsedigital.com';
+      document.getElementById('phone').value = '+27 82 123 4567';
+      document.getElementById('website').value = 'https://fsedigital.com';
+      document.getElementById('linkedin').value = 'https://linkedin.com/in/johnsmith';
+    }
+
+    // Initialize
+    fillDemo();
+    render();
+  </script>
 </body>
 </html>
