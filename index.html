@@ -397,7 +397,18 @@
 
       // Build contact rows with icons
       const contactRows = [];
-      
+
+      // Hardcoded landline number - always shown
+      contactRows.push(`
+        <tr>
+          <td style="padding:4px 8px 4px 0; vertical-align:middle;">
+            <img src="${BRAND_ASSETS.phoneIcon}" alt="Phone" width="16" height="16" style="display:block; border:0;" />
+          </td>
+          <td style="padding:4px 0; font-size:14px; color:#000000;">
+            <a href="tel:+441245477449" style="color:#000000; text-decoration:none;">+44 (0)1245 477 449</a>
+          </td>
+        </tr>`);
+
       if (v.phone) {
         const pDisp = esc(v.phone);
         const pHref = telHref(v.phone);
