@@ -337,8 +337,8 @@
     // FSE Digital Brand Assets - Locked
     const BRAND_ASSETS = {
       companyLogos: [
-        'https://i.ibb.co/C5NqgFPp/images-3.png',
-        'https://i.ibb.co/jkrD0p33/FSE-Digital-Logo.jpg'
+        'https://i.ibb.co/PZzhgFnt/Freenlance-SEO-Logo-RGB.png',
+        'https://i.ibb.co/Q3YdRXzt/FSE-Digital-Logo.png'
       ],
       partnerLogos: [
         'https://i.ibb.co/Y7chLLXn/google-partner-1.webp',
@@ -347,8 +347,10 @@
         'https://i.ibb.co/rRYVWydk/semrush-agency-partner-badge-1200x1200.png',
         'https://i.ibb.co/gMNjJxy2/Met-Business-Partners.png'
       ],
-      phoneIcon: 'https://i.ibb.co/8nhsbQzV/istockphoto-1494579261-612x612.jpg',
-      linkedInIcon: 'https://i.ibb.co/LXffYwV6/187e511cdb50bf5614bc5dbc29eaeed8.jpg'
+      phoneIcon: 'https://i.ibb.co/Kx4cvqDT/1.png',
+      emailIcon: 'https://i.ibb.co/LdsvzGfj/2.png',
+      websiteIcon: 'https://i.ibb.co/FkyRCHsW/3.png',
+      linkedInIcon: 'https://i.ibb.co/fGrTX2v7/4.png'
     };
 
     async function getFormValues() {
@@ -415,7 +417,7 @@
         contactRows.push(`
           <tr>
             <td style="padding:4px 8px 4px 0; vertical-align:middle;">
-              <span style="font-size:16px; color:${linkColor};">✉</span>
+              <img src="${BRAND_ASSETS.emailIcon}" alt="Email" width="16" height="16" style="display:block; border:0;" />
             </td>
             <td style="padding:4px 0; font-size:14px; color:${tColor};">
               <a href="mailto:${eDisp}" style="color:${linkColor}; text-decoration:none;">${eDisp}</a>
@@ -428,7 +430,7 @@
         contactRows.push(`
           <tr>
             <td style="padding:4px 8px 4px 0; vertical-align:middle;">
-              <span style="font-size:16px; color:${linkColor};">🌐</span>
+              <img src="${BRAND_ASSETS.websiteIcon}" alt="Website" width="16" height="16" style="display:block; border:0;" />
             </td>
             <td style="padding:4px 0; font-size:14px; color:${tColor};">
               <a href="${v.website}" style="color:${linkColor}; text-decoration:none;">${wDisp}</a>
