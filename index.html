@@ -388,11 +388,11 @@
           <img src="${v.headshotUrl}" alt="${fullName}" width="140" height="140" style="display:block; border-radius:50%; border:3px solid ${linkColor}; outline:0; text-decoration:none;" />
         </td>` : '';
 
-      // Build company logos stacked vertically - both left-aligned
+      // Build company logos stacked vertically - both left-aligned and same size
       const companyLogosHTML = `
         <div style="margin:10px 0 0 0;">
-          <img src="${BRAND_ASSETS.companyLogos[0]}" alt="Freelance SEO" height="36" style="display:block; border:0; outline:0; text-decoration:none; margin:0;" />
-          <img src="${BRAND_ASSETS.companyLogos[1]}" alt="FSE Digital" height="36" style="display:block; border:0; outline:0; text-decoration:none; margin:6px 0 0 0;" />
+          <img src="${BRAND_ASSETS.companyLogos[0]}" alt="Freelance SEO" height="40" style="display:block; border:0; outline:0; text-decoration:none; margin:0;" />
+          <img src="${BRAND_ASSETS.companyLogos[1]}" alt="FSE Digital" height="40" style="display:block; border:0; outline:0; text-decoration:none; margin:6px 0 0 0;" />
         </div>`;
 
       // Build contact rows with icons
@@ -406,8 +406,8 @@
             <td style="padding:4px 8px 4px 0; vertical-align:middle;">
               <img src="${BRAND_ASSETS.phoneIcon}" alt="Phone" width="16" height="16" style="display:block; border:0;" />
             </td>
-            <td style="padding:4px 0; font-size:14px; color:${tColor};">
-              ${pHref ? `<a href="${pHref}" style="color:${linkColor}; text-decoration:none;">${pDisp}</a>` : `<span>${pDisp}</span>`}
+            <td style="padding:4px 0; font-size:14px; color:#000000;">
+              ${pHref ? `<a href="${pHref}" style="color:#000000; text-decoration:none;">${pDisp}</a>` : `<span>${pDisp}</span>`}
             </td>
           </tr>`);
       }
@@ -419,8 +419,8 @@
             <td style="padding:4px 8px 4px 0; vertical-align:middle;">
               <img src="${BRAND_ASSETS.emailIcon}" alt="Email" width="16" height="16" style="display:block; border:0;" />
             </td>
-            <td style="padding:4px 0; font-size:14px; color:${tColor};">
-              <a href="mailto:${eDisp}" style="color:${linkColor}; text-decoration:none;">${eDisp}</a>
+            <td style="padding:4px 0; font-size:14px; color:#000000;">
+              <a href="mailto:${eDisp}" style="color:#000000; text-decoration:none;">${eDisp}</a>
             </td>
           </tr>`);
       }
@@ -432,8 +432,8 @@
             <td style="padding:4px 8px 4px 0; vertical-align:middle;">
               <img src="${BRAND_ASSETS.websiteIcon}" alt="Website" width="16" height="16" style="display:block; border:0;" />
             </td>
-            <td style="padding:4px 0; font-size:14px; color:${tColor};">
-              <a href="${v.website}" style="color:${linkColor}; text-decoration:none;">${wDisp}</a>
+            <td style="padding:4px 0; font-size:14px; color:#000000;">
+              <a href="${v.website}" style="color:#000000; text-decoration:none;">${wDisp}</a>
             </td>
           </tr>`);
       }
@@ -444,8 +444,8 @@
             <td style="padding:4px 8px 4px 0; vertical-align:middle;">
               <img src="${BRAND_ASSETS.linkedInIcon}" alt="LinkedIn" width="16" height="16" style="display:block; border:0; border-radius:2px;" />
             </td>
-            <td style="padding:4px 0; font-size:14px; color:${tColor};">
-              <a href="${v.linkedin}" style="color:${linkColor}; text-decoration:none;">LinkedIn Profile</a>
+            <td style="padding:4px 0; font-size:14px; color:#000000;">
+              <a href="${v.linkedin}" style="color:#000000; text-decoration:none;">LinkedIn Profile</a>
             </td>
           </tr>`);
       }
