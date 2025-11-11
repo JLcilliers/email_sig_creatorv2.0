@@ -149,11 +149,11 @@
       gap: 14px;
     }
     .preview-canvas {
-      background: #ffffff;
+      background: #F0EEEB;
       border-radius: 12px;
       border: 1px solid #dfe3ea;
       padding: 20px;
-      color: #111827;
+      color: #212529;
       min-height: 300px;
     }
     .code-area {
@@ -267,12 +267,12 @@
       <div class="row">
         <div class="field">
           <label for="brandColor">Primary Link Color</label>
-          <input id="brandColor" type="color" value="#0066cc" />
+          <input id="brandColor" type="color" value="#FF731B" />
           <div class="hint">Used for links and accent line</div>
         </div>
         <div class="field">
           <label for="textColor">Text Color</label>
-          <input id="textColor" type="color" value="#1a1a1a" />
+          <input id="textColor" type="color" value="#212529" />
         </div>
       </div>
 
@@ -361,8 +361,8 @@
         website: ensureHttps(document.getElementById('website').value),
         linkedin: ensureHttps(document.getElementById('linkedin').value),
         headshotUrl: ensureHttps(document.getElementById('headshotUrl').value),
-        brandColor: document.getElementById('brandColor').value || '#0066cc',
-        textColor: document.getElementById('textColor').value || '#1a1a1a',
+        brandColor: document.getElementById('brandColor').value || '#FF731B',
+        textColor: document.getElementById('textColor').value || '#212529',
       };
 
       // Handle file upload
@@ -467,7 +467,7 @@
 
       // Build complete signature
       const html = `<!-- FSE Digital Email Signature - ${fullName} -->
-<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; font-family: 'Segoe UI', Arial, Helvetica, sans-serif; background:#ffffff; max-width:600px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; font-family: 'Segoe UI', Arial, Helvetica, sans-serif; background:#F0EEEB; max-width:600px;">
   <tr>
     <td style="padding:16px; border-top:4px solid ${linkColor};">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
@@ -576,8 +576,8 @@
         if (el.id !== 'website') el.value = '';
       });
       document.getElementById('website').value = 'https://fsedigital.com';
-      document.getElementById('brandColor').value = '#0066cc';
-      document.getElementById('textColor').value = '#1a1a1a';
+      document.getElementById('brandColor').value = '#FF731B';
+      document.getElementById('textColor').value = '#212529';
       document.getElementById('headshotFile').value = '';
       render();
     }
