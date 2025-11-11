@@ -388,11 +388,11 @@
           <img src="${v.headshotUrl}" alt="${fullName}" width="140" height="140" style="display:block; border-radius:50%; border:3px solid ${linkColor}; outline:0; text-decoration:none;" />
         </td>` : '';
 
-      // Build company logos stacked vertically - both left-aligned and same size
+      // Build company logos stacked vertically - both left-aligned at natural size
       const companyLogosHTML = `
         <div style="margin:10px 0 0 0;">
-          <img src="${BRAND_ASSETS.companyLogos[0]}" alt="Freelance SEO" width="120" height="40" style="display:block; border:0; outline:0; text-decoration:none; margin:0;" />
-          <img src="${BRAND_ASSETS.companyLogos[1]}" alt="FSE Digital" width="120" height="40" style="display:block; border:0; outline:0; text-decoration:none; margin:6px 0 0 0;" />
+          <img src="${BRAND_ASSETS.companyLogos[0]}" alt="Freelance SEO" style="display:block; border:0; outline:0; text-decoration:none; margin:0;" />
+          <img src="${BRAND_ASSETS.companyLogos[1]}" alt="FSE Digital" style="display:block; border:0; outline:0; text-decoration:none; margin:6px 0 0 0;" />
         </div>`;
 
       // Build contact rows with icons
